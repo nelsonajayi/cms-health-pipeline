@@ -1,0 +1,30 @@
+# Environment variables — NEVER commit these
+.env
+
+# Data files — too large for git
+ingestion/data/*.csv
+ingestion/data/*.parquet
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# Airflow
+logs/
+airflow.db
+
+# VS Code
+.vscode/
+
+# Anaconda / Python environments
+*.egg-info/
+dist/
+build/
+.ipynb_checkpoints/
