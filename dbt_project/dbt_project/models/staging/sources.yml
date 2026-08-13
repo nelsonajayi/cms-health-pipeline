@@ -1,0 +1,44 @@
+version: 2
+
+sources:
+  - name: cms_raw
+    description: "Raw CMS Medicare data loaded from government CSV files"
+    database: CMS_HEALTH
+    schema: RAW
+
+    tables:
+      - name: raw_hospital_readmissions
+        description: "CMS Hospital Readmissions Reduction Program data"
+        columns:
+          - name: FACILITY_ID
+            description: "Unique CMS identifier for each hospital"
+          - name: STATE
+            description: "Two-letter US state code"
+          - name: MEASURE_NAME
+            description: "Medical condition being tracked"
+          - name: EXCESS_READMISSION_RATIO
+            description: "Ratio of actual to expected readmissions. Above 1.0 = worse than expected"
+
+      - name: raw_drug_prescribing
+        description: "Medicare Part D drug prescribing data by provider (2022)"
+        columns:
+          - name: PRSCRBR_NPI
+            description: "National Provider Identifier"
+          - name: BRND_NAME
+            description: "Brand name of the prescribed drug"
+          - name: GNRC_NAME
+            description: "Generic name of the drug"
+          - name: TOT_CLMS
+            description: "Total Medicare Part D claims"
+          - name: TOT_DRUG_CST
+            description: "Total drug cost across all claims"
+
+      - name: raw_provider_enrollment
+        description: "Medicare Fee-for-Service provider enrollment (2026)"
+        columns:
+          - name: NPI
+            description: "National Provider Identifier"
+          - name: PROVIDER_TYPE_DESC
+            description: "Provider specialty description"
+          - name: STATE_CD
+            description: "State code"

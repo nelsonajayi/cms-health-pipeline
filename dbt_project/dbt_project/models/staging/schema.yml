@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: stg_hospital_readmissions
+    description: "Cleaned CMS hospital readmissions data. One row per hospital per condition."
+    columns:
+      - name: facility_id
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+      - name: measure_name
+        tests:
+          - not_null
+      - name: excess_readmission_ratio
+        tests:
+          - not_null
+      - name: measurement_start_date
+        tests:
+          - not_null
+
+  - name: stg_drug_prescribing
+    description: "Cleaned Medicare Part D prescribing data. One row per provider per drug."
+    columns:
+      - name: provider_npi
+        tests:
+          - not_null
+      - name: brand_drug_name
+        tests:
+          - not_null
+      - name: total_claim_count
+        tests:
+          - not_null
+
+  - name: stg_provider_enrollment
+    description: "Cleaned Medicare provider enrollment data."
+    columns:
+      - name: provider_npi
+        tests:
+          - not_null
+      - name: state_cd
+        tests:
+          - not_null

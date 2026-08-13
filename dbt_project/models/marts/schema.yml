@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: mart_hospital_readmissions
+    description: "State and condition level hospital readmission summary."
+    columns:
+      - name: state
+        tests:
+          - not_null
+      - name: measure_name
+        tests:
+          - not_null
+      - name: avg_excess_readmission_ratio
+        tests:
+          - not_null
+
+  - name: mart_drug_analysis
+    description: "National Medicare Part D drug cost and utilization summary."
+    columns:
+      - name: brand_drug_name
+        tests:
+          - not_null
+      - name: national_total_cost
+        tests:
+          - not_null
