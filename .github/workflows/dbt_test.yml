@@ -1,0 +1,53 @@
+name: dbt CI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  dbt-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dbt
+      run: pip install dbt-snowflake==1.7.0
+
+    - name: Create dbt profiles
+      run: |
+        mkdir -p ~/.dbt
+        cat > ~/.dbt/profiles.yml << EOF
+        cms_health:
+          target: dev
+          outputs:
+            dev:
+              type: snowflake
+              account: "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+              user: "${{ secrets.SNOWFLAKE_USER }}"
+              password: "${{ secrets.SNOWFLAKE_PASSWORD }}"
+              role: "${{ secrets.SNOWFLAKE_ROLE }}"
+              database: "${{ secrets.SNOWFLAKE_DATABASE }}"
+              warehouse: "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
+              schema: STAGING
+              threads: 2
+        EOF
+
+    - name: dbt debug
+      working-directory: dbt_project
+      run: dbt debug
+
+    - name: dbt run
+      working-directory: dbt_project
+      run: dbt run
+
+    - name: dbt test
+      working-directory: dbt_project
+      run: dbt test
