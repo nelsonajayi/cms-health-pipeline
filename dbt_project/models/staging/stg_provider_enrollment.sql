@@ -21,9 +21,7 @@ renamed as (
         upper(trim(first_name))                         as first_name,
         trim(mdl_name)                                  as middle_name,
         upper(trim(last_name))                          as last_name,
-        upper(trim(org_name))                           as org_name,
-        _loaded_at,
-        current_timestamp()                             as _transformed_at
+        upper(trim(org_name))                           as org_name
 
     from source
 ),

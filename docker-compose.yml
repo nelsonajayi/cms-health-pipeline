@@ -1,0 +1,71 @@
+x-airflow-common:
+  &airflow-common
+  image: apache/airflow:2.8.0
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    SNOWFLAKE_ACCOUNT: ${SNOWFLAKE_ACCOUNT}
+    SNOWFLAKE_USER: ${SNOWFLAKE_USER}
+    SNOWFLAKE_PASSWORD: ${SNOWFLAKE_PASSWORD}
+    SNOWFLAKE_DATABASE: ${SNOWFLAKE_DATABASE}
+    SNOWFLAKE_SCHEMA: ${SNOWFLAKE_SCHEMA}
+    SNOWFLAKE_WAREHOUSE: ${SNOWFLAKE_WAREHOUSE}
+    SNOWFLAKE_ROLE: ${SNOWFLAKE_ROLE}
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./ingestion:/opt/airflow/ingestion
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+
+  airflow-init:
+    <<: *airflow-common
+    command: version
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_MIGRATE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: airflow
+      _AIRFLOW_WWW_USER_PASSWORD: airflow
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    restart: always
+
+volumes:
+  postgres-db-volume:

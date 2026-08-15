@@ -34,10 +34,7 @@ renamed as (
             then try_cast(tot_drug_cst as float)
                  / try_cast(tot_clms as integer)
             else null
-        end                                             as cost_per_claim,
-
-        _loaded_at,
-        current_timestamp()                             as _transformed_at
+        end                                             as cost_per_claim
 
     from source
 ),

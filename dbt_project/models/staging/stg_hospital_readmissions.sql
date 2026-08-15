@@ -27,10 +27,7 @@ renamed as (
         try_cast(number_of_readmissions as integer)     as number_of_readmissions,
         try_cast(start_date as date)                    as measurement_start_date,
         try_cast(end_date as date)                      as measurement_end_date,
-        footnote,
-        _loaded_at,
-        current_timestamp()                             as _transformed_at
-
+        footnote
     from source
 ),
 
