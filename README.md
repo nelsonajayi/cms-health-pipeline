@@ -17,7 +17,7 @@ This pipeline answers both questions using real, publicly available government d
 ---
 
 ## Architecture
-
+```text
 CMS.gov (Raw CSVs)
 │
 ▼ Great Expectations validation
@@ -47,7 +47,7 @@ Snowflake MARTS Schema
 Interactive Population Health Dashboard
 
 Orchestrated by **Apache Airflow** (weekly schedule) | Tested automatically by **GitHub Actions** CI/CD
-
+```
 ---
 
 ## Tech Stack
