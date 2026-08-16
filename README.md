@@ -103,7 +103,7 @@ Every Sunday at midnight, Airflow triggers the pipeline:
 ---
 
 ## Project Structure
-
+```text
 cms-health-pipeline/
 ├── .github/workflows/
 │ └── dbt_test.yml # GitHub Actions CI/CD
@@ -125,7 +125,7 @@ cms-health-pipeline/
 ├── docker-compose.yml # Airflow + PostgreSQL
 ├── requirements.txt
 └── .env.example
-
+```
 ---
 
 ## How to Run
@@ -198,7 +198,7 @@ docker-compose up -d
 ---
 
 ## dbt Model Lineage
-
+```text
 cms_raw (sources)
 ├── raw_hospital_readmissions
 ├── raw_drug_prescribing
@@ -210,7 +210,7 @@ cms_raw (sources)
 └── stg_provider_enrollment
 
 Run `dbt docs serve` to view the interactive lineage graph in your browser.
-
+```
 ---
 
 ## Data Quality
